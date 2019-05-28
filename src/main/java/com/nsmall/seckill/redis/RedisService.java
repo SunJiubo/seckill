@@ -26,11 +26,13 @@ public class RedisService {
 
 
 
-    public <T>T get(String key, Class<T> clazz){
+    public <T>T get(KeyPrefix keyPrefix,String key, Class<T> clazz){
         Jedis jedis =null;
         try {
             jedis = jedisPool.getResource();
-            String str = jedis.get(key);
+            //生成真正的KEY
+            String realKey = keyPrefix.getPrefix()+key;
+            String str = jedis.get(realKey);
             T t = stringToBean(str,clazz);
             return t;
         }finally {
@@ -38,7 +40,16 @@ public class RedisService {
         }
     }
 
-    public <T> boolean set(String key, T value){
+
+    /**
+     * 设置对象
+     * @param keyPrefix
+     * @param key
+     * @param value
+     * @param <T>
+     * @return
+     */
+    public <T> boolean set(KeyPrefix keyPrefix, String key, T value){
         Jedis jedis =null;
         try {
             jedis = jedisPool.getResource();
@@ -46,12 +57,76 @@ public class RedisService {
             if(str==null||str.length()<=0){
                 return false;
             }
-            jedis.set(key,str);
+            String realKey = keyPrefix.getPrefix()+key;
+            jedis.set(realKey,str);
             return true;
         }finally {
             returnToPool(jedis);
         }
     }
+
+    /**
+     * 删除
+     */
+    public boolean delete(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            //生成真正的key
+            String realKey = prefix.getPrefix() + key;
+            long ret = jedis.del(realKey);
+            return ret > 0;
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /**
+     * 判断key是否存在
+     */
+    public <T> boolean exists(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            //生成真正的key
+            String realKey = prefix.getPrefix() + key;
+            return jedis.exists(realKey);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /**
+     * 增加值
+     * Redis Incr 命令将 key 中储存的数字值增一。    如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 INCR 操作
+     */
+    public <T> Long incr(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            //生成真正的key
+            String realKey = prefix.getPrefix() + key;
+            return jedis.incr(realKey);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
+    /**
+     * 减少值
+     */
+    public <T> Long decr(KeyPrefix prefix, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            //生成真正的key
+            String realKey = prefix.getPrefix() + key;
+            return jedis.decr(realKey);
+        } finally {
+            returnToPool(jedis);
+        }
+    }
+
 
     private <T> String beanToString(T value) {
 

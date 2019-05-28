@@ -1,9 +1,11 @@
 package com.nsmall.seckill.controller;
 
 import com.nsmall.seckill.domain.User;
+import com.nsmall.seckill.redis.UserKey;
 import com.nsmall.seckill.result.CodeMsg;
 import com.nsmall.seckill.result.Result;
 import com.nsmall.seckill.redis.RedisService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,23 +62,23 @@ public class DemoController {
         model.addAttribute("name", "Jesper");
         return "hello";
     }
-//
+
     @RequestMapping("/redis/get")
     @ResponseBody
-    public Result<Long> redisGet() {
-        Long v1 = redisService.get("key1",Long.class);
-        return Result.success(v1);
+    public Result<User> redisGet() {
+        User user = redisService.get(UserKey.getById,""+1,User.class);
+        return Result.success(user);
     }
-//
-//    @RequestMapping("/redis/set")
-//    @ResponseBody
-//    public Result<Boolean> redisSet() {
-//        User user = new User();
-//        user.setId(1);
-//        user.setName("Jesper");
-//        Boolean b1 = redisService.set(UserKey.getById, ""+1, user);
-//        return Result.success(b1);
-//    }
+
+    @RequestMapping("/redis/set")
+    @ResponseBody
+    public Result<Boolean> redisSet() {
+        User user = new User();
+        user.setId(1l);
+        user.setNickname("Jesper");
+        redisService.set(UserKey.getById, ""+1,user);
+        return Result.success(true);
+    }
 //
 //    @RequestMapping("/db/doubleInsert")
 //    @ResponseBody
