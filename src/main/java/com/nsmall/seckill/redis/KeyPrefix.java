@@ -14,7 +14,7 @@ public interface KeyPrefix {
      * 有效期
      * @return
      */
-    public int expirSeconds();
+    public int expireSeconds();
 
 
     /**

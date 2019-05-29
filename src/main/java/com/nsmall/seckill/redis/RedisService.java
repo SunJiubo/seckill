@@ -24,45 +24,50 @@ public class RedisService {
     @Autowired
     JedisPool jedisPool;
 
-
-
-    public <T>T get(KeyPrefix keyPrefix,String key, Class<T> clazz){
-        Jedis jedis =null;
+    /**
+     * 从redis连接池获取redis实例
+     */
+    public <T> T get(KeyPrefix prefix, String key, Class<T> clazz) {
+        Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
-            //生成真正的KEY
-            String realKey = keyPrefix.getPrefix()+key;
+            //对key增加前缀，即可用于分类，也避免key重复
+            String realKey = prefix.getPrefix() + key;
+//            System.out.println(realKey);
             String str = jedis.get(realKey);
-            T t = stringToBean(str,clazz);
+            T t = stringToBean(str, clazz);
             return t;
-        }finally {
+        } finally {
             returnToPool(jedis);
         }
+
     }
 
-
     /**
-     * 设置对象
-     * @param keyPrefix
-     * @param key
-     * @param value
-     * @param <T>
-     * @return
+     * 存储对象
      */
-    public <T> boolean set(KeyPrefix keyPrefix, String key, T value){
-        Jedis jedis =null;
+    public <T> Boolean set(KeyPrefix prefix, String key, T value) {
+        Jedis jedis = null;
         try {
             jedis = jedisPool.getResource();
             String str = beanToString(value);
-            if(str==null||str.length()<=0){
+            if (str == null || str.length() <= 0) {
                 return false;
             }
-            String realKey = keyPrefix.getPrefix()+key;
-            jedis.set(realKey,str);
+            String realKey = prefix.getPrefix() + key;
+//            System.out.println(realKey);
+            int seconds = prefix.expireSeconds();//获取过期时间
+            if (seconds <= 0) {
+                jedis.set(realKey, str);
+            } else {
+                jedis.setex(realKey, seconds, str);
+            }
+
             return true;
-        }finally {
+        } finally {
             returnToPool(jedis);
         }
+
     }
 
     /**

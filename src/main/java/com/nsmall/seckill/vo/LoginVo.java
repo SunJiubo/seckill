@@ -1,5 +1,11 @@
 package com.nsmall.seckill.vo;
 
+import com.nsmall.seckill.validator.IsMobile;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
+
 /**
  * @ClassName LoginVo
  * @Description TODO
@@ -10,8 +16,12 @@ package com.nsmall.seckill.vo;
 
 public class LoginVo {
 
+    @NotNull
+    @IsMobile
     private String mobile;
 
+    @NotNull
+    @Length(min = 32)
     private String password;
 
     public String getMobile() {

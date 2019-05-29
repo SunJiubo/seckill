@@ -2,6 +2,7 @@ package com.nsmall.seckill.service;
 
 import com.nsmall.seckill.dao.UserDAO;
 import com.nsmall.seckill.domain.User;
+import com.nsmall.seckill.exception.GlobalException;
 import com.nsmall.seckill.result.CodeMsg;
 import com.nsmall.seckill.util.MD5Util;
 import com.nsmall.seckill.vo.LoginVo;
@@ -27,25 +28,25 @@ public class UserService {
         return userDAO.getById(id);
     }
 
-    public CodeMsg login(LoginVo loginVo){
+    public boolean login(LoginVo loginVo){
         if(loginVo==null){
-            return CodeMsg.SERVER_ERROR;
+            throw new GlobalException(CodeMsg.SERVER_ERROR);
         }
         String mobile = loginVo.getMobile();
         String formword = loginVo.getPassword();
 
         User user = userDAO.getById(Long.parseLong(mobile));
         if(user==null){
-            return CodeMsg.MOBILE_NOT_EXIST;
+            throw new GlobalException(CodeMsg.MOBILE_NOT_EXIST);
         }
 
         String dbPass = user.getPassword();
         String saltDB = user.getSalt();
         String calcPass = MD5Util.formPassToDbPass(formword,saltDB);
         if(!calcPass.equals(dbPass)){
-            return CodeMsg.PASSWORD_ERROR;
+            throw new GlobalException(CodeMsg.PASSWORD_ERROR);
         }
 
-        return CodeMsg.SUCCESS;
+        return true;
     }
 }
