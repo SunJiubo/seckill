@@ -63,22 +63,22 @@ public class DemoController {
         return "hello";
     }
 
-    @RequestMapping("/redis/get")
-    @ResponseBody
-    public Result<User> redisGet() {
-        User user = redisService.get(UserKey.getById,""+1,User.class);
-        return Result.success(user);
-    }
-
-    @RequestMapping("/redis/set")
-    @ResponseBody
-    public Result<Boolean> redisSet() {
-        User user = new User();
-        user.setId(1l);
-        user.setNickname("Jesper");
-        redisService.set(UserKey.getById, ""+1,user);
-        return Result.success(true);
-    }
+//    @RequestMapping("/redis/get")
+//    @ResponseBody
+//    public Result<User> redisGet() {
+//        User user = redisService.get(UserKey.getById,""+1,User.class);
+//        return Result.success(user);
+//    }
+//
+//    @RequestMapping("/redis/set")
+//    @ResponseBody
+//    public Result<Boolean> redisSet() {
+//        User user = new User();
+//        user.setId(1l);
+//        user.setNickname("Jesper");
+//        redisService.set(UserKey.getById, ""+1,user);
+//        return Result.success(true);
+//    }
 //
 //    @RequestMapping("/db/doubleInsert")
 //    @ResponseBody
