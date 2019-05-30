@@ -1,6 +1,7 @@
 package com.nsmall.seckill.service;
 
 import com.nsmall.seckill.dao.GoodsDAO;
+import com.nsmall.seckill.domain.SeckillGoods;
 import com.nsmall.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,4 +28,9 @@ public class GoodsService {
         return goodsDAO.getGoodsVoByGoodsId(goodsId);
     }
 
+    public void reduceStock(GoodsVo goods) {
+        SeckillGoods g = new SeckillGoods();
+        g.setGoodsId(goods.getId());
+        goodsDAO.reduceStock(g);
+    }
 }

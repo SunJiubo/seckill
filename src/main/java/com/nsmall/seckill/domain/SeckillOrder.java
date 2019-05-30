@@ -9,7 +9,7 @@ package com.nsmall.seckill.domain;
 public class SeckillOrder {
     private Long id;
     private Long userId;
-    private Long  orderId;
+    private Long orderId;
     private Long goodsId;
 
     public Long getId() {
