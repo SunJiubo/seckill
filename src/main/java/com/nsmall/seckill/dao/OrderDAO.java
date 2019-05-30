@@ -36,4 +36,11 @@ public interface OrderDAO {
     @Select({"select ",SELECT_FIELDS_SKORDER," from",TABLE_NAME_SKORDER," where user_id=#{userId} and goods_id=#{goodsId}"})
     public SeckillOrder getSeckillOrderByUserIdGoodsId(@Param("userId") Long userId,
                                                        @Param("goodsId") long goodsId);
+
+    @Select({"select ",SELECT_FIELDS_ORDER_INFO," from",TABLE_NAME_ORDER_INFO," where user_id=#{userId} and id=#{orderId}"})
+    public OrderInfo getSeckillOrderByUserIdOrderId(@Param("userId")long userId,
+                                                    @Param("orderId") long orderId);
+
+    @Select({"select ",SELECT_FIELDS_ORDER_INFO," from",TABLE_NAME_ORDER_INFO," where user_id=#{userId}"})
+    public OrderInfo getSeckillOrderByUserId(@Param("userId") Long userId);
 }

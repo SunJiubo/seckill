@@ -1,8 +1,10 @@
 package com.nsmall.seckill.controller;
 
+import com.nsmall.seckill.domain.OrderInfo;
 import com.nsmall.seckill.domain.User;
 import com.nsmall.seckill.redis.RedisService;
 import com.nsmall.seckill.service.GoodsService;
+import com.nsmall.seckill.service.OrderService;
 import com.nsmall.seckill.service.UserService;
 import com.nsmall.seckill.vo.GoodsVo;
 import org.apache.commons.lang3.StringUtils;
@@ -30,13 +32,19 @@ public class GoodsController {
     @Autowired
     GoodsService goodsService;
 
+    @Autowired
+    OrderService orderService;
+
     @RequestMapping("/to_list")
     public String List(Model model,User user){
 
         List<GoodsVo> goodsVos = goodsService.listGoodsVo();
 
+        OrderInfo orderInfo = orderService.getSeckillOrderByUserId(user.getId());
+
         model.addAttribute("user",user);
         model.addAttribute("goodsVos",goodsVos);
+        model.addAttribute("orderId",orderInfo.getId());
 
         return "goods_list";
     }

@@ -27,6 +27,10 @@ public class CodeMsg {
     public static CodeMsg SECKILL_OVER = new CodeMsg(500500,"商品已秒杀完");
     public static CodeMsg REPEATE_SECKILL = new CodeMsg(500500,"不可重复秒杀");
 
+    //用户模块5006xx
+    public static CodeMsg NOT_CURUSER = new CodeMsg(500600,"无权查看他人订单");
+
+
 
 
     private CodeMsg(int code,String msg){

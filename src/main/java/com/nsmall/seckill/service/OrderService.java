@@ -46,4 +46,12 @@ public class OrderService {
     public SeckillOrder getSeckillOrderByUserIdGoodsId(Long userId, long goodsId) {
         return orderDAO.getSeckillOrderByUserIdGoodsId(userId,goodsId);
     }
+
+    public OrderInfo getSeckillOrderByUserIdOrderId(long userId, long orderId) {
+        return orderDAO.getSeckillOrderByUserIdOrderId(userId,orderId);
+    }
+
+    public OrderInfo getSeckillOrderByUserId(Long userId) {
+        return orderDAO.getSeckillOrderByUserId(userId);
+    }
 }
