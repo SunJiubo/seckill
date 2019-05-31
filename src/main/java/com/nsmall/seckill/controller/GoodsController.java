@@ -40,11 +40,11 @@ public class GoodsController {
 
         List<GoodsVo> goodsVos = goodsService.listGoodsVo();
 
-        OrderInfo orderInfo = orderService.getSeckillOrderByUserId(user.getId());
+//        OrderInfo orderInfo = orderService.getSeckillOrderByUserId(user.getId());
 
         model.addAttribute("user",user);
         model.addAttribute("goodsVos",goodsVos);
-        model.addAttribute("orderId",orderInfo.getId());
+//        model.addAttribute("orderId",orderInfo.getId());
 
         return "goods_list";
     }

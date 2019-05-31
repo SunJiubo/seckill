@@ -9,7 +9,6 @@ import com.nsmall.seckill.result.CodeMsg;
 import com.nsmall.seckill.util.MD5Util;
 import com.nsmall.seckill.util.UUIDUtil;
 import com.nsmall.seckill.vo.LoginVo;
-import com.sun.deploy.net.HttpResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
